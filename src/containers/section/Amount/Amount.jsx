@@ -1,16 +1,17 @@
 import React from "react"
+import { IoIosArrowDown } from "react-icons/io"
 import Card from "../../../components/Card/Card"
 import Divider from "../../../components/Divider/Divider"
-import { IoIosArrowDown } from "react-icons/io"
+import { connect } from "react-redux"
 
-const Amount = () => {
+const Amount = ({ amount }) => {
 	return (
 		<>
 			<Card>
 				<p className="font-bold text-lg mb-4">The total amount of</p>
 				<div className="flex justify-between text-secondary mb-2">
 					<p>Temporary amount</p>
-					<p>$53.90</p>
+					<p>${amount.toFixed(2)}</p>
 				</div>
 				<div className="flex justify-between text-secondary">
 					<p>Shopping</p>
@@ -22,7 +23,7 @@ const Amount = () => {
 						The total amount of <br />
 						(including VAT)
 					</p>
-					<p>$53.90</p>
+					<p>${amount.toFixed(2)}</p>
 				</div>
 				<div className="mt-6 p-3 text-center text-white bg-blue-600 rounded-lg hover:cursor-pointer hover:bg-blue-700">GO TO CHECKOUT</div>
 			</Card>
@@ -36,4 +37,10 @@ const Amount = () => {
 	)
 }
 
-export default Amount
+const mapStateToProps = (state) => {
+	return {
+		amount: state.amountReducers.amount,
+	}
+}
+
+export default connect(mapStateToProps)(Amount)

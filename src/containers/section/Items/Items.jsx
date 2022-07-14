@@ -1,9 +1,14 @@
-import React from "react"
+import React, { useEffect } from "react"
 import Card from "../../../components/Card/Card"
 import Divider from "../../../components/Divider/Divider"
 import Item from "../../../components/Item/Item"
+import { connect } from "react-redux"
 
-const Items = () => {
+const Items = ({ initAmount }) => {
+	useEffect(() => {
+		initAmount()
+	}, [])
+
 	return (
 		<>
 			<Card>
@@ -16,4 +21,10 @@ const Items = () => {
 	)
 }
 
-export default Items
+const mapDispatchToProps = (dispatch) => {
+	return {
+		initAmount: () => dispatch({ type: "INIT_AMOUNT", init: 17.99 + 35.99 }),
+	}
+}
+
+export default connect(null, mapDispatchToProps)(Items)

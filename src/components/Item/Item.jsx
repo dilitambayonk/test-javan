@@ -1,23 +1,33 @@
 import React, { useState } from "react"
-import { MdDelete } from "react-icons/md"
-import { FaHeart } from "react-icons/fa"
 import { BiMinus, BiPlus } from "react-icons/bi"
+import { FaHeart } from "react-icons/fa"
+import { MdDelete } from "react-icons/md"
+import { connect } from "react-redux"
 
-const Item = ({ image, name, code, color, size, price }) => {
+const Item = (props) => {
+	const { image, name, code, color, size, price } = props
 	const [amount, setAmount] = useState(1)
 
 	const handlePlus = () => {
 		setAmount(amount + 1)
+		props.handlePlus(price)
+
+		// console.log(name, price)
 	}
 
 	const handleMin = () => {
-		if (amount > 1) setAmount(amount - 1)
+		if (amount > 1) {
+			setAmount(amount - 1)
+			props.handleMin(price)
+
+			// console.log(name, price)
+		}
 	}
 
 	return (
 		<div className="flex">
 			<div>
-				<img className="rounded-lg max-h-fit" src={image} />
+				<img className="rounded-lg max-h-fit" src={image} alt="" />
 			</div>
 			<div className="flex-grow">
 				<div className="sm:flex justify-between h-max">
@@ -34,7 +44,7 @@ const Item = ({ image, name, code, color, size, price }) => {
 								</div>
 								<div className="flex items-center mt-2 hover:cursor-pointer">
 									<FaHeart />
-									<span className="ml-1 text-sm">REMOVE ITEM</span>
+									<span className="ml-1 text-sm">ADD TO FAVORITE</span>
 								</div>
 							</div>
 						</div>
@@ -57,4 +67,11 @@ const Item = ({ image, name, code, color, size, price }) => {
 	)
 }
 
-export default Item
+const mapDispatchToProps = (dispatch) => {
+	return {
+		handlePlus: (price) => dispatch({ type: "PLUS_AMOUNT", price: price }),
+		handleMin: (price) => dispatch({ type: "MIN_AMOUNT", price: price }),
+	}
+}
+
+export default connect(null, mapDispatchToProps)(Item)
